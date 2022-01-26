@@ -46,10 +46,15 @@ func loadFile(fileName string) (map[string]string, error) {
 			keyValueSplitted = strings.Fields(line)
 		}
 
+		fieldName := strings.TrimSpace(keyValueSplitted[0])
+		if fieldName == "" {
+			continue
+		}
+
 		if len(keyValueSplitted) == 1 {
-			fields[strings.TrimSpace(keyValueSplitted[0])] = ""
+			fields[fieldName] = ""
 		} else {
-			fields[strings.TrimSpace(keyValueSplitted[0])] = strings.TrimSpace(keyValueSplitted[1])
+			fields[fieldName] = strings.TrimSpace(keyValueSplitted[1])
 		}
 	}
 
