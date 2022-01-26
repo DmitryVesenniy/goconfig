@@ -30,7 +30,7 @@ func Get(config interface{}, envFile ...string) func() interface{} {
 }
 
 func formatConfig(config interface{}) {
-	val := reflect.ValueOf(&config).Elem()
+	val := reflect.ValueOf(config).Elem()
 	for i := 0; i < val.NumField(); i++ {
 		valueField := val.Field(i)
 		typeField := val.Type().Field(i)

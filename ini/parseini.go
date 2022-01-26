@@ -27,7 +27,7 @@ func Get(config interface{}, iniFiles ...string) func() interface{} {
 }
 
 func formatConfig(config interface{}, fields map[string]string) {
-	val := reflect.ValueOf(&config).Elem()
+	val := reflect.ValueOf(config).Elem()
 	for i := 0; i < val.NumField(); i++ {
 		valueField := val.Field(i)
 		typeField := val.Type().Field(i)
