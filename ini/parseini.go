@@ -1,7 +1,7 @@
 package ini
 
 import (
-	"log"
+	"fmt"
 	"reflect"
 	"strconv"
 	"sync"
@@ -12,17 +12,19 @@ var (
 )
 
 // Get Exports
-func Get(config interface{}, iniFiles ...string) func() interface{} {
+func Get(config interface{}, iniFiles ...string) func() (interface{}, error) {
+	var err error
 	once.Do(func() {
 		fields, err := Load(iniFiles...)
 		if err != nil {
-			log.Print("[!] No .ini file found")
+			err = fmt.Errorf("failed to load ini: %w", err)
+			return
 		}
 		formatConfig(config, fields)
 	})
 
-	return func() interface{} {
-		return config
+	return func() (interface{}, error) {
+		return config, err
 	}
 }
 

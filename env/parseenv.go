@@ -1,7 +1,7 @@
 package env
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"reflect"
 	"strconv"
@@ -15,17 +15,18 @@ var (
 )
 
 // Get Exports
-func Get(config interface{}, envFile ...string) func() interface{} {
+func Get(config interface{}, envFile ...string) func() (interface{}, error) {
+	var err error
 	once.Do(func() {
 		if err := godotenv.Load(envFile...); err != nil {
-			log.Print("[!] No .env file found")
-			// return
+			err = fmt.Errorf("failed to load env: %w", err)
+			return
 		}
 		formatConfig(config)
 	})
 
-	return func() interface{} {
-		return config
+	return func() (interface{}, error) {
+		return config, err
 	}
 }
 
